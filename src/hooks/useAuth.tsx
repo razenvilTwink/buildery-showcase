@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Проверяем, есть ли сохраненная сессия
+    // Check if there's a saved session
     const savedUser = localStorage.getItem('construction_admin_user');
     if (savedUser) {
       try {
@@ -33,8 +33,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = async (username: string, password: string): Promise<boolean> => {
-    // Для демонстрации используем хардкод учетных данных
-    // В реальном приложении здесь должен быть запрос к API
+    // For demonstration using hardcoded credentials
+    // In a real app, this would be an API request
     if (username === 'admin' && password === 'secure123') {
       const user = { username };
       setUser(user);
