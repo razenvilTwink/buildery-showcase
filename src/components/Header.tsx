@@ -1,122 +1,129 @@
-
-import React, { useState, useEffect } from 'react';
-import CallButton from './UI/CallButton';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-const Header = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  
-  const handleScroll = () => {
-    setIsScrolled(window.scrollY > 20);
+const Header = ({ className }: { className?: string }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
   };
-  
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      window.scrollTo({
-        top: element.offsetTop - 80,
-        behavior: 'smooth'
-      });
-      setIsMobileMenuOpen(false);
-    }
-  };
-  
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-  
-  const navItems = [
-    { label: "О компании", id: "about" },
-    { label: "Дома", id: "houses" },
-    { label: "Преимущества", id: "advantages" },
-    { label: "Проекты", id: "projects" },
-    { label: "Галерея", id: "gallery" },
-    { label: "Контакты", id: "contact" }
-  ];
-  
+
   return (
-    <header 
-      className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-        isScrolled 
-          ? 'bg-white/95 backdrop-blur-sm shadow-md py-2' 
-          : 'bg-transparent py-4'
-      )}
-    >
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            <div className="text-construction-dark font-serif text-xl md:text-2xl font-bold">
-              ГоризонтСтрой
-            </div>
-          </div>
-          
-          <nav className="hidden md:flex items-center space-x-6">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className="text-construction-dark hover:text-construction-light transition-colors duration-200 font-medium"
-              >
-                {item.label}
-              </button>
-            ))}
-          </nav>
-          
-          <div className="hidden md:block">
-            <CallButton 
-              phoneNumber="+7 (999) 123-45-67" 
-              variant="primary"
-            />
-          </div>
-          
-          <button 
-            className="block md:hidden"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor" 
-              className="w-6 h-6 text-construction-dark"
-            >
-              {isMobileMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
-        </div>
-        
-        {/* Mobile menu */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden mt-4 py-4 bg-white rounded-lg shadow-lg animate-fade-in">
-            <nav className="flex flex-col space-y-4 px-4">
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className="text-construction-dark hover:text-construction-light transition-colors duration-200 font-medium text-left py-2 border-b border-gray-100 last:border-b-0"
-                >
-                  {item.label}
-                </button>
-              ))}
-              <div className="pt-2">
-                <CallButton 
-                  phoneNumber="+7 (999) 123-45-67" 
-                  variant="primary"
-                  fullWidth
-                />
-              </div>
-            </nav>
-          </div>
-        )}
+    <header className={cn("bg-white border-b sticky top-0 z-50", className)}>
+      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+        {/* Логотип */}
+        <Link to="/" className="font-serif text-xl font-bold text-construction-dark">
+          СтройДом
+        </Link>
+
+        {/* Мобильная кнопка меню */}
+        <button 
+          className="md:hidden"
+          onClick={toggleMenu}
+          aria-label={isMenuOpen ? "Закрыть меню" : "Открыть меню"}
+        >
+          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+
+        {/* Десктопное меню */}
+        <nav className="hidden md:block">
+          <ul className="flex items-center space-x-6">
+            <li>
+              <Link to="/" className="text-sm text-construction-dark hover:text-construction-medium transition-colors">
+                Главная
+              </Link>
+            </li>
+            <li>
+              <Link to="/projects" className="text-sm text-construction-dark hover:text-construction-medium transition-colors">
+                Проекты
+              </Link>
+            </li>
+            <li>
+              <Link to="/about" className="text-sm text-construction-dark hover:text-construction-medium transition-colors">
+                О компании
+              </Link>
+            </li>
+            <li>
+              <Link to="/contact" className="text-sm text-construction-dark hover:text-construction-medium transition-colors">
+                Контакты
+              </Link>
+            </li>
+            <li className="ml-4">
+              <Link to="/admin" className="text-sm text-construction-dark hover:text-construction-medium transition-colors">
+                Админ
+              </Link>
+            </li>
+            <li className="ml-4">
+              <Button className="bg-construction-dark hover:bg-construction-dark/90">
+                Заказать звонок
+              </Button>
+            </li>
+          </ul>
+        </nav>
       </div>
+
+      {/* Мобильное меню */}
+      {isMenuOpen && (
+        <div className="md:hidden bg-white border-t">
+          <nav className="container mx-auto px-4 py-4">
+            <ul className="space-y-4">
+              <li>
+                <Link 
+                  to="/" 
+                  className="block py-2 text-construction-dark hover:text-construction-medium transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Главная
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/projects" 
+                  className="block py-2 text-construction-dark hover:text-construction-medium transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Проекты
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/about" 
+                  className="block py-2 text-construction-dark hover:text-construction-medium transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  О компании
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/contact" 
+                  className="block py-2 text-construction-dark hover:text-construction-medium transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Контакты
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/admin" 
+                  className="block py-2 text-construction-dark hover:text-construction-medium transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Админ
+                </Link>
+              </li>
+              <li className="pt-2">
+                <Button className="w-full bg-construction-dark hover:bg-construction-dark/90">
+                  Заказать звонок
+                </Button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      )}
     </header>
   );
 };

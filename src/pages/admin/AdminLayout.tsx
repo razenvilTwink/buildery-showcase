@@ -6,7 +6,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 
 const AdminLayout = () => {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const navigate = useNavigate();
   
   const handleLogout = () => {
@@ -21,7 +21,7 @@ const AdminLayout = () => {
       <div className="w-64 bg-construction-dark text-white flex flex-col">
         <div className="p-4 border-b border-construction-light/20">
           <h1 className="text-xl font-serif">Админ-панель</h1>
-          <p className="text-sm text-construction-light/70">Управление сайтом</p>
+          <p className="text-sm text-construction-light/70">Привет, {user?.username}</p>
         </div>
         
         <nav className="p-4 flex-1">
