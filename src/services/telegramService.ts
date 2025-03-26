@@ -3,6 +3,8 @@
  * Сервис для отправки сообщений в Telegram бот
  */
 
+import { mockSendToTelegram } from './mockTelegramService';
+
 // URL API Telegram бота
 const TELEGRAM_API_URL = import.meta.env.VITE_TELEGRAM_API_URL || '/api/telegram';
 
@@ -20,6 +22,12 @@ export interface ContactFormData {
  * @returns Promise с результатом отправки
  */
 export const sendContactFormToTelegram = async (formData: ContactFormData): Promise<{ success: boolean; message: string }> => {
+  // В режиме разработки используем мок-сервис
+  if (import.meta.env.DEV) {
+    mockSendToTelegram(formData);
+    return { success: true, message: 'Сообщение успешно отправлено (режим разработки)' };
+  }
+  
   try {
     const response = await fetch(TELEGRAM_API_URL, {
       method: 'POST',

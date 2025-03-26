@@ -17,6 +17,7 @@ export const handler = async (req) => {
   try {
     // Получаем данные из запроса
     const formData = await req.json();
+    console.log('Получены данные формы:', formData);
     
     // Проверяем наличие обязательных полей
     if (!formData.name || !formData.phone) {
@@ -31,11 +32,13 @@ export const handler = async (req) => {
     
     // Форматируем сообщение
     const message = formatContactMessage(formData);
+    console.log('Сформировано сообщение для отправки');
     
     // Отправляем сообщение всем авторизованным пользователям
     const sent = await sendMessageToAllAuthorizedUsers(message);
     
     if (sent) {
+      console.log('Сообщение успешно отправлено');
       return new Response(
         JSON.stringify({ 
           success: true, 
@@ -44,6 +47,7 @@ export const handler = async (req) => {
         { status: 200, headers: { 'Content-Type': 'application/json' } }
       );
     } else {
+      console.log('Не удалось отправить сообщение');
       return new Response(
         JSON.stringify({ 
           success: false, 

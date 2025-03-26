@@ -32,7 +32,8 @@ const usersFilePath = path.join(process.cwd(), 'users.json');
 const loadUsers = async () => {
   try {
     const data = await fs.readFile(usersFilePath, 'utf-8');
-    authorizedUsers = new Set(JSON.parse(data));
+    const users = JSON.parse(data);
+    authorizedUsers = new Set(users.map(id => Number(id))); // Преобразуем ID в числа
     console.log(`👥 Загружено ${authorizedUsers.size} авторизованных пользователей`);
   } catch (err) {
     if (err.code === 'ENOENT') {
@@ -50,6 +51,7 @@ const saveUsers = async () => {
       usersFilePath,
       JSON.stringify([...authorizedUsers], null, 2)
     );
+    console.log('✅ Пользователи сохранены');
   } catch (err) {
     console.error('❌ Ошибка сохранения users.json:', err);
   }
@@ -61,6 +63,7 @@ loadUsers().catch(console.error);
 // Обработчики команд
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
+  console.log(`Получена команда /start от пользователя ${chatId}`);
   
   if (authorizedUsers.has(chatId)) {
     return bot.sendMessage(chatId, '✅ Вы уже авторизованы!');
@@ -75,11 +78,15 @@ bot.on('message', async (msg) => {
 
   if (!text || text.startsWith('/')) return;
 
+  console.log(`Получено сообщение от ${chatId}: ${text}`);
+
   if (text === PASSWORD) {
+    console.log(`Пользователь ${chatId} ввел правильный пароль`);
     authorizedUsers.add(chatId);
     await saveUsers();
     bot.sendMessage(chatId, '🎉 Авторизация успешна! Теперь вы будете получать уведомления.');
   } else if (!authorizedUsers.has(chatId)) {
+    console.log(`Пользователь ${chatId} ввел неверный пароль`);
     bot.sendMessage(chatId, '❌ Неверный пароль. Попробуйте снова или используйте /start');
   }
 });
@@ -94,8 +101,10 @@ export const sendMessageToAllAuthorizedUsers = async (message) => {
   }
   
   try {
+    console.log(`Отправка сообщения ${users.length} пользователям`);
     for (const chatId of users) {
       await bot.sendMessage(chatId, message, { parse_mode: 'HTML' });
+      console.log(`Сообщение отправлено пользователю ${chatId}`);
     }
     return true;
   } catch (error) {
