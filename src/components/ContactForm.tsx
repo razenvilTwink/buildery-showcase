@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import SectionTitle from './UI/SectionTitle';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { sendContactFormToTelegram } from '@/services/telegramService';
 
 const ContactForm = () => {
   const [name, setName] = useState('');
@@ -12,19 +13,35 @@ const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Имитация отправки формы
-    setTimeout(() => {
-      toast.success("Ваша заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.");
-      setName('');
-      setPhone('');
-      setEmail('');
-      setMessage('');
+    try {
+      // Отправляем данные формы в Telegram
+      const result = await sendContactFormToTelegram({
+        name,
+        phone,
+        email,
+        message,
+      });
+      
+      if (result.success) {
+        toast.success("Ваша заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.");
+        // Очищаем форму после успешной отправки
+        setName('');
+        setPhone('');
+        setEmail('');
+        setMessage('');
+      } else {
+        toast.error(`Ошибка при отправке: ${result.message}`);
+      }
+    } catch (error) {
+      console.error('Ошибка при отправке формы:', error);
+      toast.error("Произошла ошибка при отправке заявки. Пожалуйста, попробуйте позже.");
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
   
   useEffect(() => {
