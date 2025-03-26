@@ -21,7 +21,7 @@ export const mockSendToTelegram = (formData: ContactFormData): void => {
   console.groupEnd();
   
   toast.info('Заявка будет отправлена в Telegram-бот при работе на сервере', {
-    description: 'Сейчас вы видите это сообщение, потому что бот работает только на сервере',
+    description: 'Бот настроен и готов к работе с вашим токеном. На продакшн сервере все сообщения будут приходить в ваш Telegram.',
     duration: 5000,
   });
 };

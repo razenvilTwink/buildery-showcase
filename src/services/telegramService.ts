@@ -26,7 +26,11 @@ export const sendContactFormToTelegram = async (formData: ContactFormData): Prom
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify({
+        ...formData,
+        // Добавляем временную метку для отслеживания
+        timestamp: new Date().toISOString()
+      }),
     });
 
     if (!response.ok) {
