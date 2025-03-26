@@ -1,12 +1,15 @@
 
 /**
- * Сервис для отправки сообщений в Telegram бот
+ * Сервис для отправки сообщений в Telegram бот через Supabase Edge Functions
  */
 
 import { mockSendToTelegram } from './mockTelegramService';
 
 // URL API Telegram бота
-const TELEGRAM_API_URL = import.meta.env.VITE_TELEGRAM_API_URL || '/api/telegram';
+// В продакшене используется Supabase Edge Function URL
+const SUPABASE_URL = 'https://gzyksjsjvinugnzagyfu.supabase.co';
+const TELEGRAM_API_URL = import.meta.env.VITE_TELEGRAM_API_URL || `${SUPABASE_URL}/functions/v1/telegram`;
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6eWtzanNqdmludWduemFneWZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwMTIwOTAsImV4cCI6MjA1ODU4ODA5MH0.PJ3Z21sfrzMNYDRDv31gZUUac3kBuW1Om_UMMWR9xS4';
 
 // Интерфейс для данных формы обратной связи
 export interface ContactFormData {
@@ -33,6 +36,7 @@ export const sendContactFormToTelegram = async (formData: ContactFormData): Prom
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
       },
       body: JSON.stringify({
         ...formData,

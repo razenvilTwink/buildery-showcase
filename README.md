@@ -1,4 +1,3 @@
-
 # Welcome to your Lovable project
 
 ## Project info
@@ -9,7 +8,7 @@
 
 ### Шаг 1: Настройка Supabase
 
-1. Подключите проект к Supabase через интеграцию Lovable
+1. Проект уже подключен к Supabase: https://gzyksjsjvinugnzagyfu.supabase.co
 2. Перейдите в консоль Supabase
 3. Перейдите в раздел "Edge Functions"
 4. Создайте новую функцию с именем "telegram"
@@ -33,20 +32,20 @@ ADMIN_PASSWORD=ваш_секретный_пароль_для_бота
 
 2. Проверьте логи функции, чтобы убедиться, что бот запустился успешно
 
-### Шаг 4: Подключение формы на сайте
-
-1. Убедитесь, что в вашем проекте установлена переменная окружения `VITE_TELEGRAM_API_URL`, указывающая на URL вашей Edge Function
-2. В файле `.env`:
-   ```
-   VITE_TELEGRAM_API_URL=https://ваш-проект.supabase.co/functions/v1/telegram
-   ```
-
-### Шаг 5: Авторизация в боте
+### Шаг 4: Авторизация в боте
 
 1. Найдите вашего бота в Telegram по токену
 2. Отправьте команду `/start`
 3. Введите пароль, который вы установили в переменной `ADMIN_PASSWORD`
 4. После авторизации вы начнете получать уведомления о новых заявках с сайта
+
+### Информация о Supabase
+
+**URL проекта**: https://gzyksjsjvinugnzagyfu.supabase.co
+
+**Ключи доступа**:
+- Anon Public: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6eWtzanNqdmludWduemFneWZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwMTIwOTAsImV4cCI6MjA1ODU4ODA5MH0.PJ3Z21sfrzMNYDRDv31gZUUac3kBuW1Om_UMMWR9xS4`
+- Service Role: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6eWtzanNqdmludWduemFneWZ1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MzAxMjA5MCwiZXhwIjoyMDU4NTg4MDkwfQ.OO-VmHjsGJX4jrx5l8sO2rD9cQx4v8DkxCmvl5YnaJg`
 
 ## How can I edit this code?
 
