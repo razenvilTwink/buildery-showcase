@@ -1,8 +1,52 @@
+
 # Welcome to your Lovable project
 
 ## Project info
 
 **URL**: https://lovable.dev/projects/4a96fc14-f574-4e76-a128-a676e5c2b665
+
+## Настройка Telegram бота с Supabase Edge Functions
+
+### Шаг 1: Настройка Supabase
+
+1. Подключите проект к Supabase через интеграцию Lovable
+2. Перейдите в консоль Supabase
+3. Перейдите в раздел "Edge Functions"
+4. Создайте новую функцию с именем "telegram"
+5. Загрузите ваши файлы API из `src/api` в эту функцию
+
+### Шаг 2: Установка переменных окружения
+
+В настройках вашей Supabase Edge Function установите следующие переменные окружения:
+
+```
+TELEGRAM_BOT_TOKEN=7809537061:AAHWVRqNikuUyTz0I7C4ycNR0GOUweIKv08
+ADMIN_PASSWORD=ваш_секретный_пароль_для_бота
+```
+
+### Шаг 3: Запуск бота
+
+1. После настройки Edge Function, вам нужно запустить бота командой:
+   ```
+   supabase functions deploy telegram
+   ```
+
+2. Проверьте логи функции, чтобы убедиться, что бот запустился успешно
+
+### Шаг 4: Подключение формы на сайте
+
+1. Убедитесь, что в вашем проекте установлена переменная окружения `VITE_TELEGRAM_API_URL`, указывающая на URL вашей Edge Function
+2. В файле `.env`:
+   ```
+   VITE_TELEGRAM_API_URL=https://ваш-проект.supabase.co/functions/v1/telegram
+   ```
+
+### Шаг 5: Авторизация в боте
+
+1. Найдите вашего бота в Telegram по токену
+2. Отправьте команду `/start`
+3. Введите пароль, который вы установили в переменной `ADMIN_PASSWORD`
+4. После авторизации вы начнете получать уведомления о новых заявках с сайта
 
 ## How can I edit this code?
 

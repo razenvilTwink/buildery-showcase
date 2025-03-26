@@ -1,29 +1,32 @@
 
 /**
- * Временный сервис для имитации отправки уведомлений в Telegram
- * Используется для локальной разработки без настоящего Telegram-бота
+ * Мок-сервис для симуляции отправки сообщений в Telegram в режиме разработки
  */
 
 import { ContactFormData } from './telegramService';
-import { toast } from 'sonner';
 
 /**
- * Имитирует отправку сообщения в Telegram
- * В реальной среде будет заменен настоящим API
+ * Симулирует отправку данных в Telegram
+ * @param formData Данные из формы обратной связи
  */
 export const mockSendToTelegram = (formData: ContactFormData): void => {
-  console.group('📨 Новое сообщение для Telegram:');
-  console.log('👤 От:', formData.name);
-  console.log('📞 Телефон:', formData.phone);
-  console.log('✉️ Email:', formData.email || 'Не указан');
-  console.log('💬 Сообщение:', formData.message || 'Не указано');
-  console.log('⏰ Время:', new Date().toLocaleString());
-  console.groupEnd();
-  
-  toast.info('Заявка будет отправлена в Telegram-бот при работе на сервере', {
-    description: 'Бот настроен и готов к работе с вашим токеном. На продакшн сервере все сообщения будут приходить в ваш Telegram.',
-    duration: 5000,
-  });
-};
+  // Форматируем сообщение (аналогично серверной функции)
+  const message = `
+🔔 НОВАЯ ЗАЯВКА С САЙТА (МОК)
 
-export default mockSendToTelegram;
+👤 Имя: ${formData.name}
+📞 Телефон: ${formData.phone}
+✉️ Email: ${formData.email || 'Не указан'}
+💬 Сообщение: 
+${formData.message || 'Не указано'}
+
+⏰ Дата: ${new Date().toLocaleString('ru-RU')}
+`;
+
+  // Выводим сообщение в консоль браузера
+  console.log('---------------------------------------');
+  console.log('📱 СИМУЛЯЦИЯ ОТПРАВКИ В TELEGRAM');
+  console.log(message);
+  console.log('---------------------------------------');
+  console.log('✅ В рабочей версии это сообщение будет отправлено в Telegram');
+};
