@@ -7,7 +7,7 @@ import { mockSendToTelegram } from './mockTelegramService';
 
 // Telegram Bot API
 const TELEGRAM_BOT_TOKEN = '7809537061:AAHWVRqNikuUyTz0I7C4ycNR0GOUweIKv08';
-const TELEGRAM_CHAT_ID = import.meta.env.VITE_TELEGRAM_CHAT_ID || ''; // ID чата куда отправлять сообщения
+const TELEGRAM_CHAT_ID = import.meta.env.VITE_TELEGRAM_CHAT_ID || '361122150'; // ID чата куда отправлять сообщения
 const TELEGRAM_API_URL = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
 
 // Интерфейс для данных формы обратной связи
