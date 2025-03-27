@@ -1,15 +1,14 @@
 
 /**
- * Сервис для отправки сообщений в Telegram бот через Supabase Edge Functions
+ * Сервис для прямой отправки сообщений в Telegram бот
  */
 
 import { mockSendToTelegram } from './mockTelegramService';
 
-// URL API Telegram бота
-// В продакшене используется Supabase Edge Function URL
-const SUPABASE_URL = 'https://gzyksjsjvinugnzagyfu.supabase.co';
-const TELEGRAM_API_URL = import.meta.env.VITE_TELEGRAM_API_URL || `${SUPABASE_URL}/functions/v1/telegram`;
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6eWtzanNqdmludWduemFneWZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwMTIwOTAsImV4cCI6MjA1ODU4ODA5MH0.PJ3Z21sfrzMNYDRDv31gZUUac3kBuW1Om_UMMWR9xS4';
+// Telegram Bot API
+const TELEGRAM_BOT_TOKEN = '7809537061:AAHWVRqNikuUyTz0I7C4ycNR0GOUweIKv08';
+const TELEGRAM_CHAT_ID = import.meta.env.VITE_TELEGRAM_CHAT_ID || ''; // ID чата куда отправлять сообщения
+const TELEGRAM_API_URL = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
 
 // Интерфейс для данных формы обратной связи
 export interface ContactFormData {
@@ -20,7 +19,24 @@ export interface ContactFormData {
 }
 
 /**
- * Отправляет данные формы в Telegram бот
+ * Форматирует сообщение для отправки в Telegram
+ */
+const formatTelegramMessage = (formData: ContactFormData): string => {
+  return `
+🔔 НОВАЯ ЗАЯВКА С САЙТА
+
+👤 Имя: ${formData.name}
+📞 Телефон: ${formData.phone}
+✉️ Email: ${formData.email || 'Не указан'}
+💬 Сообщение: 
+${formData.message || 'Не указано'}
+
+⏰ Дата: ${new Date().toLocaleString('ru-RU')}
+`;
+};
+
+/**
+ * Отправляет данные формы напрямую в Telegram бот
  * @param formData Данные из формы обратной связи
  * @returns Promise с результатом отправки
  */
@@ -32,22 +48,29 @@ export const sendContactFormToTelegram = async (formData: ContactFormData): Prom
   }
   
   try {
+    // Форматируем сообщение для Telegram
+    const text = formatTelegramMessage(formData);
+    
+    // Используем chatId из переменной окружения или стандартное значение для демонстрации
+    // Важно: этот chatId должен соответствовать вашему чату в Telegram
+    const chatId = TELEGRAM_CHAT_ID || '12345678'; // Замените на ваш Chat ID (можно узнать через @userinfobot в Telegram)
+    
     const response = await fetch(TELEGRAM_API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
       },
       body: JSON.stringify({
-        ...formData,
-        // Добавляем временную метку для отслеживания
-        timestamp: new Date().toISOString()
+        chat_id: chatId,
+        text: text,
+        parse_mode: 'HTML'
       }),
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Произошла ошибка при отправке сообщения');
+    const data = await response.json();
+    
+    if (!data.ok) {
+      throw new Error(data.description || 'Произошла ошибка при отправке сообщения');
     }
 
     return { success: true, message: 'Сообщение успешно отправлено' };
