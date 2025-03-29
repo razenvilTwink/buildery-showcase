@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
@@ -52,11 +53,6 @@ const Header = ({ className }: { className?: string }) => {
               </Link>
             </li>
             <li className="ml-4">
-              <Link to="/admin" className="text-sm text-construction-dark hover:text-construction-medium transition-colors">
-                Админ
-              </Link>
-            </li>
-            <li className="ml-4">
               <Button className="bg-construction-dark hover:bg-construction-dark/90">
                 Заказать звонок
               </Button>
@@ -104,15 +100,6 @@ const Header = ({ className }: { className?: string }) => {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Контакты
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/admin" 
-                  className="block py-2 text-construction-dark hover:text-construction-medium transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Админ
                 </Link>
               </li>
               <li className="pt-2">
