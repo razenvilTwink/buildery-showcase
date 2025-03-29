@@ -1,15 +1,48 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogTrigger,
+  DialogDescription,
+  DialogFooter
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/components/ui/use-toast";
 
 const Header = ({ className }: { className?: string }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleCallbackRequest = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Здесь можно добавить отправку запроса на обратный звонок
+    // Имитируем отправку
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setName('');
+      setPhone('');
+      toast({
+        title: "Запрос отправлен",
+        description: "Мы перезвоним вам в ближайшее время",
+      });
+    }, 1000);
   };
 
   return (
@@ -53,9 +86,50 @@ const Header = ({ className }: { className?: string }) => {
               </Link>
             </li>
             <li className="ml-4">
-              <Button className="bg-construction-dark hover:bg-construction-dark/90">
-                Заказать звонок
-              </Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="bg-construction-dark hover:bg-construction-dark/90">
+                    Заказать звонок
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-md">
+                  <DialogHeader>
+                    <DialogTitle>Заказать обратный звонок</DialogTitle>
+                    <DialogDescription>
+                      Оставьте свой номер телефона, и мы перезвоним вам в ближайшее время
+                    </DialogDescription>
+                  </DialogHeader>
+                  <form onSubmit={handleCallbackRequest}>
+                    <div className="space-y-4 py-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="name">Ваше имя</Label>
+                        <Input 
+                          id="name" 
+                          placeholder="Иван Иванов" 
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="phone">Номер телефона</Label>
+                        <Input 
+                          id="phone" 
+                          placeholder="+7 (999) 123-45-67" 
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          required
+                        />
+                      </div>
+                    </div>
+                    <DialogFooter>
+                      <Button type="submit" disabled={isSubmitting}>
+                        {isSubmitting ? "Отправка..." : "Отправить"}
+                      </Button>
+                    </DialogFooter>
+                  </form>
+                </DialogContent>
+              </Dialog>
             </li>
           </ul>
         </nav>
@@ -103,9 +177,50 @@ const Header = ({ className }: { className?: string }) => {
                 </Link>
               </li>
               <li className="pt-2">
-                <Button className="w-full bg-construction-dark hover:bg-construction-dark/90">
-                  Заказать звонок
-                </Button>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button className="w-full bg-construction-dark hover:bg-construction-dark/90">
+                      Заказать звонок
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                      <DialogTitle>Заказать обратный звонок</DialogTitle>
+                      <DialogDescription>
+                        Оставьте свой номер телефона, и мы перезвоним вам в ближайшее время
+                      </DialogDescription>
+                    </DialogHeader>
+                    <form onSubmit={handleCallbackRequest}>
+                      <div className="space-y-4 py-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="name-mobile">Ваше имя</Label>
+                          <Input 
+                            id="name-mobile" 
+                            placeholder="Иван Иванов" 
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="phone-mobile">Номер телефона</Label>
+                          <Input 
+                            id="phone-mobile" 
+                            placeholder="+7 (999) 123-45-67" 
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <DialogFooter>
+                        <Button type="submit" disabled={isSubmitting}>
+                          {isSubmitting ? "Отправка..." : "Отправить"}
+                        </Button>
+                      </DialogFooter>
+                    </form>
+                  </DialogContent>
+                </Dialog>
               </li>
             </ul>
           </nav>

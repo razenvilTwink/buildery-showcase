@@ -1,88 +1,138 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SectionTitle from '@/components/UI/SectionTitle';
 import ProjectCard from '@/components/UI/ProjectCard';
-import { projectsData } from '@/data/projects';
+import { projectsData, getUniqueRegions, getCitiesByRegion, REGIONS } from '@/data/projects';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
 
 const AllProjects = () => {
-  const [filter, setFilter] = useState('all');
+  const [activeRegion, setActiveRegion] = useState<string>('all');
+  const [activeCity, setActiveCity] = useState<string>('all');
+  const [cities, setCities] = useState<string[]>([]);
+  const regions = getUniqueRegions();
   
-  const filteredProjects = filter === 'all' 
-    ? projectsData 
-    : projectsData.filter(project => {
-        // Здесь можно добавить логику фильтрации по типу дома, цене и т.д.
-        return project.location.includes(filter);
-      });
+  useEffect(() => {
+    if (activeRegion !== 'all') {
+      const regionCities = getCitiesByRegion(activeRegion);
+      setCities(regionCities);
+    } else {
+      setCities([]);
+    }
+    setActiveCity('all');
+  }, [activeRegion]);
+  
+  const filteredProjects = projectsData.filter(project => {
+    if (activeRegion === 'all') return true;
+    if (project.region !== activeRegion) return false;
+    if (activeCity === 'all') return true;
+    return project.city === activeCity;
+  });
   
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
       <Header />
       
-      <div className="pt-24 pb-16 bg-construction-sand/10">
-        <div className="section-container">
+      <main className="flex-grow pt-24 pb-16 bg-construction-sand/10">
+        <div className="container mx-auto px-4">
           <SectionTitle 
             title="Наши проекты" 
             subtitle="Реализованные работы"
-            className="reveal-element reveal-bottom"
+            className="mb-12"
           />
           
-          <div className="flex flex-wrap justify-center gap-4 mb-8">
-            <button 
-              onClick={() => setFilter('all')}
-              className={`px-4 py-2 rounded-full text-sm transition-colors ${
-                filter === 'all' 
-                  ? 'bg-construction-dark text-white' 
-                  : 'bg-white border border-construction-medium/20 hover:bg-construction-light/10'
-              }`}
-            >
-              Все проекты
-            </button>
-            <button 
-              onClick={() => setFilter('Московская')}
-              className={`px-4 py-2 rounded-full text-sm transition-colors ${
-                filter === 'Московская' 
-                  ? 'bg-construction-dark text-white' 
-                  : 'bg-white border border-construction-medium/20 hover:bg-construction-light/10'
-              }`}
-            >
-              Московская область
-            </button>
-            <button 
-              onClick={() => setFilter('Ленинградская')}
-              className={`px-4 py-2 rounded-full text-sm transition-colors ${
-                filter === 'Ленинградская' 
-                  ? 'bg-construction-dark text-white' 
-                  : 'bg-white border border-construction-medium/20 hover:bg-construction-light/10'
-              }`}
-            >
-              Ленинградская область
-            </button>
+          <div className="mb-12">
+            <h3 className="text-xl font-serif mb-4 text-construction-dark">Выберите регион</h3>
+            <div className="flex flex-wrap gap-2 mb-6">
+              <Button 
+                variant={activeRegion === 'all' ? 'default' : 'outline'}
+                onClick={() => setActiveRegion('all')}
+                className={activeRegion === 'all' ? 'bg-construction-dark' : ''}
+              >
+                Все регионы
+              </Button>
+              {regions.map(region => (
+                <Button 
+                  key={region}
+                  variant={activeRegion === region ? 'default' : 'outline'}
+                  onClick={() => setActiveRegion(region)}
+                  className={activeRegion === region ? 'bg-construction-dark' : ''}
+                >
+                  {region}
+                </Button>
+              ))}
+            </div>
+            
+            {cities.length > 0 && (
+              <div>
+                <h3 className="text-xl font-serif mb-4 text-construction-dark">Выберите город</h3>
+                <div className="flex flex-wrap gap-2 mb-6">
+                  <Button 
+                    variant={activeCity === 'all' ? 'default' : 'outline'}
+                    onClick={() => setActiveCity('all')}
+                    className={activeCity === 'all' ? 'bg-construction-dark' : ''}
+                  >
+                    Все города
+                  </Button>
+                  {cities.map(city => (
+                    <Button 
+                      key={city}
+                      variant={activeCity === city ? 'default' : 'outline'}
+                      onClick={() => setActiveCity(city)}
+                      className={activeCity === city ? 'bg-construction-dark' : ''}
+                    >
+                      {city}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {filteredProjects.map((project) => (
-              <ProjectCard
-                key={project.id}
-                image={project.image}
-                title={project.title}
-                description={project.description}
-                location={project.location}
-                area={project.area}
-                price={project.price}
-              />
-            ))}
-          </div>
+          {filteredProjects.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              {filteredProjects.map((project) => (
+                <ProjectCard
+                  key={project.id}
+                  image={project.image}
+                  title={project.title}
+                  description={project.description}
+                  location={project.city ? `${project.city}, ${project.region}` : project.location}
+                  area={project.area}
+                  price={project.price}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12 bg-white rounded-lg shadow-md">
+              <h3 className="text-xl font-serif mb-4 text-construction-dark">Проекты не найдены</h3>
+              <p className="text-construction-medium mb-6">
+                К сожалению, проекты с выбранными параметрами отсутствуют.
+              </p>
+              <Button 
+                variant="outline" 
+                onClick={() => {
+                  setActiveRegion('all');
+                  setActiveCity('all');
+                }}
+              >
+                Сбросить фильтры
+              </Button>
+            </div>
+          )}
           
-          <div className="text-center">
-            <Link to="/" className="btn btn-outline py-2.5 px-6">
-              Вернуться на главную
+          <div className="text-center mt-8">
+            <Link to="/">
+              <Button variant="outline">
+                Вернуться на главную
+              </Button>
             </Link>
           </div>
         </div>
-      </div>
+      </main>
       
       <Footer />
     </div>
