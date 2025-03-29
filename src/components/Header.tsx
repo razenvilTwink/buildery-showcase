@@ -45,6 +45,52 @@ const Header = ({ className }: { className?: string }) => {
     }, 1000);
   };
 
+  // Create a separate CallbackDialog component to avoid hook issues
+  const CallbackDialog = ({ children }: { children: React.ReactNode }) => (
+    <Dialog>
+      <DialogTrigger asChild>
+        {children}
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Заказать обратный звонок</DialogTitle>
+          <DialogDescription>
+            Оставьте свой номер телефона, и мы перезвоним вам в ближайшее время
+          </DialogDescription>
+        </DialogHeader>
+        <form onSubmit={handleCallbackRequest}>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="name">Ваше имя</Label>
+              <Input 
+                id="name" 
+                placeholder="Иван Иванов" 
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="phone">Номер телефона</Label>
+              <Input 
+                id="phone" 
+                placeholder="+7 (999) 123-45-67" 
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Отправка..." : "Отправить"}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+
   return (
     <header className={cn("bg-white border-b sticky top-0 z-50", className)}>
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -86,50 +132,11 @@ const Header = ({ className }: { className?: string }) => {
               </Link>
             </li>
             <li className="ml-4">
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button className="bg-construction-dark hover:bg-construction-dark/90">
-                    Заказать звонок
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-md">
-                  <DialogHeader>
-                    <DialogTitle>Заказать обратный звонок</DialogTitle>
-                    <DialogDescription>
-                      Оставьте свой номер телефона, и мы перезвоним вам в ближайшее время
-                    </DialogDescription>
-                  </DialogHeader>
-                  <form onSubmit={handleCallbackRequest}>
-                    <div className="space-y-4 py-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="name">Ваше имя</Label>
-                        <Input 
-                          id="name" 
-                          placeholder="Иван Иванов" 
-                          value={name}
-                          onChange={(e) => setName(e.target.value)}
-                          required
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="phone">Номер телефона</Label>
-                        <Input 
-                          id="phone" 
-                          placeholder="+7 (999) 123-45-67" 
-                          value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
-                          required
-                        />
-                      </div>
-                    </div>
-                    <DialogFooter>
-                      <Button type="submit" disabled={isSubmitting}>
-                        {isSubmitting ? "Отправка..." : "Отправить"}
-                      </Button>
-                    </DialogFooter>
-                  </form>
-                </DialogContent>
-              </Dialog>
+              <CallbackDialog>
+                <Button className="bg-construction-dark hover:bg-construction-dark/90">
+                  Заказать звонок
+                </Button>
+              </CallbackDialog>
             </li>
           </ul>
         </nav>
@@ -177,50 +184,11 @@ const Header = ({ className }: { className?: string }) => {
                 </Link>
               </li>
               <li className="pt-2">
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button className="w-full bg-construction-dark hover:bg-construction-dark/90">
-                      Заказать звонок
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-md">
-                    <DialogHeader>
-                      <DialogTitle>Заказать обратный звонок</DialogTitle>
-                      <DialogDescription>
-                        Оставьте свой номер телефона, и мы перезвоним вам в ближайшее время
-                      </DialogDescription>
-                    </DialogHeader>
-                    <form onSubmit={handleCallbackRequest}>
-                      <div className="space-y-4 py-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="name-mobile">Ваше имя</Label>
-                          <Input 
-                            id="name-mobile" 
-                            placeholder="Иван Иванов" 
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="phone-mobile">Номер телефона</Label>
-                          <Input 
-                            id="phone-mobile" 
-                            placeholder="+7 (999) 123-45-67" 
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                            required
-                          />
-                        </div>
-                      </div>
-                      <DialogFooter>
-                        <Button type="submit" disabled={isSubmitting}>
-                          {isSubmitting ? "Отправка..." : "Отправить"}
-                        </Button>
-                      </DialogFooter>
-                    </form>
-                  </DialogContent>
-                </Dialog>
+                <CallbackDialog>
+                  <Button className="w-full bg-construction-dark hover:bg-construction-dark/90">
+                    Заказать звонок
+                  </Button>
+                </CallbackDialog>
               </li>
             </ul>
           </nav>
