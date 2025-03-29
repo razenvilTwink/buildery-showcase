@@ -42,10 +42,10 @@ ${formData.message || 'Не указано'}
  */
 export const sendContactFormToTelegram = async (formData: ContactFormData): Promise<{ success: boolean; message: string }> => {
   // В режиме разработки используем мок-сервис
-  if (import.meta.env.DEV) {
+  /*if (import.meta.env.DEV) {
     mockSendToTelegram(formData);
     return { success: true, message: 'Сообщение успешно отправлено (режим разработки)' };
-  }
+  }*/
   
   try {
     // Форматируем сообщение для Telegram

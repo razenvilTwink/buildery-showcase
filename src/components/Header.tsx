@@ -16,7 +16,7 @@ const Header = ({ className }: { className?: string }) => {
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         {/* Логотип */}
         <Link to="/" className="font-serif text-xl font-bold text-construction-dark">
-          СтройДом
+          Строй Мечту
         </Link>
 
         {/* Мобильная кнопка меню */}
