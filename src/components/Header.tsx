@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, Phone } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { 
@@ -16,6 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { sendContactFormToTelegram } from '@/services/telegramService';
 
 const Header = ({ className }: { className?: string }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,7 +24,6 @@ const Header = ({ className }: { className?: string }) => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Выносим диалоговое окно в отдельный компонент
   const CallbackDialog = () => {
     const [open, setOpen] = useState(false);
     const [name, setName] = useState('');
@@ -32,22 +31,70 @@ const Header = ({ className }: { className?: string }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { toast } = useToast();
 
-    const handleCallbackRequest = (e: React.FormEvent) => {
+    const handleCallbackRequest = async (e: React.FormEvent) => {
       e.preventDefault();
       setIsSubmitting(true);
       
-      // Здесь можно добавить отправку запроса на обратный звонок
-      // Имитируем отправку
-      setTimeout(() => {
-        setIsSubmitting(false);
-        setName('');
-        setPhone('');
-        setOpen(false); // Закрываем диалог только после успешной отправки
-        toast({
-          title: "Запрос отправлен",
-          description: "Мы перезвоним вам в ближайшее время",
+      try {
+        const phoneDigits = phone.replace(/\D/g, '');
+        if (phoneDigits.length !== 11) {
+          toast.error("Пожалуйста, введите корректный номер телефона");
+          setIsSubmitting(false);
+          return;
+        }
+
+        const result = await sendContactFormToTelegram({
+          name,
+          phone,
+          email: '', // Поле не используется в форме звонка
+          message: 'Запрос на обратный звонок' // Стандартное сообщение
         });
-      }, 1000);
+
+        if (result.success) {
+          toast.success("Запрос отправлен! Мы перезвоним вам в ближайшее время.");
+          setName('');
+          setPhone('');
+          setOpen(false);
+        } else {
+          toast.error(`Ошибка при отправке: ${result.message}`);
+        }
+      } catch (error) {
+        console.error('Ошибка при отправке формы:', error);
+        toast.error("Произошла ошибка при отправке заявки. Пожалуйста, попробуйте позже.");
+      } finally {
+        setIsSubmitting(false);
+      }
+    };
+
+    const formatPhone = (value: string) => {
+      let digits = value.replace(/\D/g, '');
+      
+      if (!digits.startsWith('7') && !digits.startsWith('+7')) {
+        digits = '7' + digits;
+      }
+
+      if (digits.length > 11) {
+        digits = digits.substring(0, 11);
+      }
+
+      let formatted = '';
+      if (digits.length > 0) {
+        formatted = '+7 ';
+        if (digits.length > 1) {
+          formatted += `(${digits.substring(1, 4)}`;
+        }
+        if (digits.length > 4) {
+          formatted += `) ${digits.substring(4, 7)}`;
+        }
+        if (digits.length > 7) {
+          formatted += `-${digits.substring(7, 9)}`;
+        }
+        if (digits.length > 9) {
+          formatted += `-${digits.substring(9, 11)}`;
+        }
+      }
+
+      return formatted;
     };
 
     return (
@@ -61,13 +108,13 @@ const Header = ({ className }: { className?: string }) => {
           <DialogHeader>
             <DialogTitle>Заказать обратный звонок</DialogTitle>
             <DialogDescription>
-              Оставьте свой номер телефона, и мы перезвоним вам в ближайшее время
+              Оставьте свои данные, и мы перезвоним вам в ближайшее время
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleCallbackRequest}>
             <div className="space-y-4 py-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Ваше имя</Label>
+                <Label htmlFor="name">Ваше имя *</Label>
                 <Input 
                   id="name" 
                   placeholder="Иван Иванов" 
@@ -77,19 +124,20 @@ const Header = ({ className }: { className?: string }) => {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="phone">Номер телефона</Label>
+                <Label htmlFor="phone">Номер телефона *</Label>
                 <Input 
                   id="phone" 
-                  placeholder="+7 (999) 123-45-67" 
+                  placeholder="+7 (___) ___-__-__" 
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={(e) => setPhone(formatPhone(e.target.value))}
                   required
+                  pattern="\+7\s\(\d{3}\)\s\d{3}-\d{2}-\d{2}"
                 />
               </div>
             </div>
             <DialogFooter>
               <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Отправка..." : "Отправить"}
+                {isSubmitting ? "Отправка..." : "Заказать звонок"}
               </Button>
             </DialogFooter>
           </form>
@@ -101,12 +149,10 @@ const Header = ({ className }: { className?: string }) => {
   return (
     <header className={cn("bg-white border-b sticky top-0 z-50", className)}>
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        {/* Логотип */}
         <Link to="/" className="font-serif text-xl font-bold text-construction-dark">
           Строй Мечту
         </Link>
 
-        {/* Мобильная кнопка меню */}
         <button 
           className="md:hidden"
           onClick={toggleMenu}
@@ -115,7 +161,6 @@ const Header = ({ className }: { className?: string }) => {
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
 
-        {/* Десктопное меню */}
         <nav className="hidden md:block">
           <ul className="flex items-center space-x-6">
             <li>
@@ -145,7 +190,6 @@ const Header = ({ className }: { className?: string }) => {
         </nav>
       </div>
 
-      {/* Мобильное меню */}
       {isMenuOpen && (
         <div className="md:hidden bg-white border-t">
           <nav className="container mx-auto px-4 py-4">
