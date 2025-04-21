@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import Header from '@/components/Header';
 import AboutSection from '@/components/AboutSection';
@@ -10,7 +9,6 @@ import ContactForm from '@/components/ContactForm';
 import Footer from '@/components/Footer';
 
 const Index = () => {
-  // Анимация элементов при прокрутке
   useEffect(() => {
     const handleScroll = () => {
       const revealElements = document.querySelectorAll('.reveal-element');
@@ -43,14 +41,16 @@ const Index = () => {
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div className="md:order-1 reveal-element reveal-left">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-6 text-construction-dark leading-tight">
-                Строим дома <br />мечты <span className="relative inline-block">
-                  под ключ
+                Строительство домов под ключ <br />в Ставропольском крае{" "}
+                <span className="relative inline-block">
+                  от компании "Строй Мечту"
                   <span className="absolute bottom-0 left-0 w-full h-1 bg-construction-light"></span>
                 </span>
               </h1>
               
               <p className="text-xl text-construction-medium mb-8 max-w-lg">
-                Профессиональное строительство домов с полным циклом работ от проектирования до сдачи объекта.
+                Мы занимаемся строительством современных домов и коттеджей под ключ в Ставрополе и Ставропольском крае.
+                Гарантируем качество, индивидуальный подход и фиксированную стоимость.
               </p>
               
               <div className="flex flex-wrap gap-4">

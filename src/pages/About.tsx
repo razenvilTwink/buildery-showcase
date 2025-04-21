@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -15,7 +14,7 @@ const About = () => {
         <div className="container mx-auto px-4">
           <SectionTitle
             title="О компании"
-            subtitle="Строим вашу мечту с 2005 года"
+            subtitle="Строительство домов под ключ в Ставропольском крае"
             className="mb-12"
           />
           
@@ -23,19 +22,17 @@ const About = () => {
             <div>
               <h3 className="text-2xl font-serif mb-4 text-construction-dark">Наша история</h3>
               <p className="text-construction-medium mb-4">
-                Компания "Строй Мечту" основана в 2005 году группой профессиональных строителей и архитекторов, 
-                объединенных общей идеей — создавать не просто дома, а пространства для счастливой жизни.
+                Компания "Строй Мечту" основана в 2005 году в Ставропольском крае. Мы профессионально занимаемся строительством домов под ключ в Ставрополе и регионе, объединяя лучшие строительные традиции с современными технологиями.
               </p>
               <p className="text-construction-medium mb-4">
-                За 19 лет работы мы построили более 300 частных домов и коттеджей по всей России, 
-                от Калининграда до Владивостока. Каждый проект уникален и отражает индивидуальность наших клиентов.
+                За 19 лет работы построили более 300 домов и коттеджей в Ставропольском крае и по всей России. Каждый проект индивидуален — гарантируем качество, надежность и комфорт вашему дому.
               </p>
             </div>
             
             <div className="rounded-lg overflow-hidden shadow-md">
               <img 
                 src="https://images.unsplash.com/photo-1556156653-e5a7676c4f39?auto=format&fit=crop&w=800&q=80" 
-                alt="Строительство дома" 
+                alt="Строительство дома в Ставропольском крае" 
                 className="w-full h-full object-cover"
               />
             </div>

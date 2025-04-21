@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 const Footer = () => {
@@ -9,12 +8,13 @@ const Footer = () => {
       <div className="section-container">
         <div className="grid md:grid-cols-3 gap-8">
           <div>
-            <h3 className="text-xl font-serif font-semibold mb-4">ГоризонтСтрой</h3>
+            <h3 className="text-xl font-serif font-semibold mb-4">Строй Мечту</h3>
             <p className="text-gray-300 mb-4">
-              Строительство домов под ключ с гарантией качества и соблюдением сроков.
+              Строительство домов под ключ с гарантией качества и соблюдением сроков. Основной регион — Ставрополь и Ставропольский край.
             </p>
             <p className="text-gray-300">
-              © {currentYear} ГоризонтСтрой.<br/>
+              © {currentYear} Строй Мечту.<br/>
+              ИП ХОРОШИЛОВА НАТАЛЬЯ АЛЕКСАНДРОВНА<br/>
               Все права защищены.
             </p>
           </div>
