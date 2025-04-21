@@ -5,8 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Plus, Trash2, Edit, Search } from 'lucide-react';
 import { useProjectsStore } from '@/hooks/useProjectsStore';
-import { Project } from '@/data/projects';
+import { Project, REGIONS } from '@/data/projects';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import {
   Dialog,
   DialogContent,
@@ -30,6 +31,7 @@ const AdminProjects = () => {
     title: '',
     description: '',
     location: '',
+    region: REGIONS.STAVROPOL, // Default to Stavropol region
     area: '',
     price: '',
     image: '',
@@ -45,6 +47,10 @@ const AdminProjects = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleRegionChange = (value: string) => {
+    setFormData(prev => ({ ...prev, region: value }));
   };
   
   // Обработчик добавления проекта
@@ -65,6 +71,7 @@ const AdminProjects = () => {
       title: '',
       description: '',
       location: '',
+      region: REGIONS.STAVROPOL,
       area: '',
       price: '',
       image: '',
@@ -112,6 +119,7 @@ const AdminProjects = () => {
       title: project.title,
       description: project.description,
       location: project.location,
+      region: project.region,
       area: project.area,
       price: project.price,
       image: project.image,
@@ -281,6 +289,25 @@ const AdminProjects = () => {
               </div>
               
               <div className="space-y-2">
+                <Label htmlFor="region">
+                  Регион <span className="text-destructive">*</span>
+                </Label>
+                <Select
+                  value={formData.region}
+                  onValueChange={handleRegionChange}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Выберите регион" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value={REGIONS.STAVROPOL}>Ставропольский край</SelectItem>
+                    <SelectItem value={REGIONS.MOSCOW}>Московская область</SelectItem>
+                    <SelectItem value={REGIONS.LENINGRAD}>Ленинградская область</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="space-y-2">
                 <Label htmlFor="price">Цена</Label>
                 <Input
                   id="price"
@@ -380,6 +407,25 @@ const AdminProjects = () => {
                     onChange={handleInputChange}
                   />
                 </div>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="edit-region">
+                  Регион <span className="text-destructive">*</span>
+                </Label>
+                <Select
+                  value={formData.region}
+                  onValueChange={handleRegionChange}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Выберите регион" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value={REGIONS.STAVROPOL}>Ставропольский край</SelectItem>
+                    <SelectItem value={REGIONS.MOSCOW}>Московская область</SelectItem>
+                    <SelectItem value={REGIONS.LENINGRAD}>Ленинградская область</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               
               <div className="space-y-2">
