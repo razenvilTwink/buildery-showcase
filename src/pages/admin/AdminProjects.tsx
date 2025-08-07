@@ -1,13 +1,13 @@
 
 import React, { useState } from 'react';
 import { toast } from 'sonner';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/UI/button';
+import { Card, CardContent } from '@/components/UI/card';
 import { Plus, Trash2, Edit, Search } from 'lucide-react';
 import { useProjectsStore } from '@/hooks/useProjectsStore';
 import { Project, REGIONS } from '@/data/projects';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/UI/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/UI/select';
 import {
   Dialog,
   DialogContent,
@@ -15,8 +15,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
+} from '@/components/UI/dialog';
+import { Label } from '@/components/UI/label';
 
 const AdminProjects = () => {
   const { projects, addProject, updateProject, deleteProject } = useProjectsStore();

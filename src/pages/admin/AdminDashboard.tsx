@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/UI/card';
 import { Building2, Users, Package, Eye } from 'lucide-react';
 import { projectsData } from '@/data/projects';
 

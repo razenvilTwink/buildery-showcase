@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { MapPin, Home, Calculator } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/UI/button';
 import QuickOrderModal from './QuickOrderModal';
 
 interface ProjectCardProps {

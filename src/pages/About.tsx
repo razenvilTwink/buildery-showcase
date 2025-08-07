@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SectionTitle from '@/components/UI/SectionTitle';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/UI/button';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
