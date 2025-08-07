@@ -1,0 +1,145 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 20 10% 15%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 20 10% 15%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 10% 15%;
+    
+    --primary: 25 16% 47%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 0 0% 95%;
+    --secondary-foreground: 20 10% 15%;
+    
+    --muted: 0 0% 92%;
+    --muted-foreground: 20 10% 36%;
+    
+    --accent: 25 16% 90%;
+    --accent-foreground: 20 14% 22%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 20 5% 88%;
+    --input: 20 5% 88%;
+    --ring: 24 5% 64%;
+    
+    --radius: 0.5rem;
+  }
+
+  * {
+    @apply border-border box-border;
+  }
+  
+  html {
+    @apply scroll-smooth;
+  }
+  
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+
+  section {
+    @apply py-16 md:py-24;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    @apply bg-construction-medium/40 rounded-full;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-construction-medium/60;
+  }
+}
+
+@layer components {
+  .section-container {
+    @apply container mx-auto px-4 md:px-8;
+  }
+  
+  .btn {
+    @apply inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50;
+  }
+  
+  .btn-primary {
+    @apply bg-construction-dark text-white hover:bg-construction-dark/90 shadow-sm;
+  }
+  
+  .btn-secondary {
+    @apply bg-construction-light text-construction-dark hover:bg-construction-light/90;
+  }
+  
+  .btn-outline {
+    @apply border border-construction-dark text-construction-dark hover:bg-construction-light/10;
+  }
+  
+  .glass-card {
+    @apply bg-white/90 backdrop-blur-sm border border-white/20 shadow-lg;
+  }
+  
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-xl;
+  }
+  
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer utilities {
+  .reveal {
+    @apply opacity-0 transition-all duration-700;
+  }
+  
+  .reveal.active {
+    @apply opacity-100 transform-none;
+  }
+  
+  .reveal-left {
+    @apply opacity-0 -translate-x-20 transition-all duration-700;
+  }
+  
+  .reveal-left.active {
+    @apply opacity-100 translate-x-0;
+  }
+  
+  .reveal-right {
+    @apply opacity-0 translate-x-20 transition-all duration-700;
+  }
+  
+  .reveal-right.active {
+    @apply opacity-100 translate-x-0;
+  }
+  
+  .reveal-bottom {
+    @apply opacity-0 translate-y-20 transition-all duration-700;
+  }
+  
+  .reveal-bottom.active {
+    @apply opacity-100 translate-y-0;
+  }
+}
