@@ -21,7 +21,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   // Проверка сессии при загрузке
   useEffect(() => {
-    fetch('/api/check-auth', { credentials: 'include' })
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://ваш-api.vercel.app';
+    fetch(`${BASE_URL}/api/check-auth`, { credentials: 'include' })
       .then(res => res.json())
       .then(data => {
         if (data.success && data.username) setUser({ username: data.username });
@@ -31,7 +32,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = async (username: string, password: string): Promise<boolean> => {
-    const res = await fetch('/api/login', {
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://ваш-api.vercel.app';
+    const res = await fetch(`${BASE_URL}/api/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
@@ -46,7 +48,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = async () => {
-    await fetch('/api/logout', { method: 'POST', credentials: 'include' });
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://ваш-api.vercel.app';
+    await fetch(`${BASE_URL}/api/logout`, { method: 'POST', credentials: 'include' });
     setUser(null);
   };
 

@@ -6,8 +6,8 @@ import Footer from '@/components/Footer';
 import SectionTitle from '@/components/UI/SectionTitle';
 import ProjectCard from '@/components/UI/ProjectCard';
 import { projectsData, getUniqueRegions, getCitiesByRegion, REGIONS } from '@/data/projects';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/UI/tabs';
+import { Button } from '@/components/UI/button';
 
 const AllProjects = () => {
   const [activeRegion, setActiveRegion] = useState<string>('all');

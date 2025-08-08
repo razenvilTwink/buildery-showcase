@@ -9,13 +9,15 @@ interface ProjectsSliderProps {
   startIndex: number;
   isTransitioning: boolean;
   visibleProjects: number;
+  onQuickEstimate?: (projectTitle: string) => void;
 }
 
 const ProjectsSlider = ({ 
   projects, 
   startIndex, 
   isTransitioning,
-  visibleProjects
+  visibleProjects,
+  onQuickEstimate,
 }: ProjectsSliderProps) => {
   return (
     <div className="overflow-hidden">
@@ -36,6 +38,7 @@ const ProjectsSlider = ({
             area={project.area}
             price={project.price}
             className="flex-shrink-0 w-full md:w-[calc(33.333%-1rem)]"
+            onQuickEstimate={onQuickEstimate}
           />
         ))}
       </div>

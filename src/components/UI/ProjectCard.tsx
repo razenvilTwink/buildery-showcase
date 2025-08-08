@@ -2,8 +2,7 @@
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { MapPin, Home, Calculator } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import QuickOrderModal from './QuickOrderModal';
+import { Button } from '@/components/UI/button';
 
 interface ProjectCardProps {
   image: string;
@@ -13,6 +12,7 @@ interface ProjectCardProps {
   area?: string;
   price?: string;
   className?: string;
+  onQuickEstimate?: (projectTitle: string) => void;
 }
 
 const ProjectCard = ({ 
@@ -22,10 +22,10 @@ const ProjectCard = ({
   location, 
   area, 
   price,
-  className 
+  className,
+  onQuickEstimate,
 }: ProjectCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isQuickOrderOpen, setIsQuickOrderOpen] = useState(false);
   
   return (
     <div 
@@ -82,7 +82,7 @@ const ProjectCard = ({
             className="w-full"
             onClick={(e) => {
               e.stopPropagation();
-              setIsQuickOrderOpen(true);
+              onQuickEstimate?.(title);
             }}
           >
             <Calculator className="w-4 h-4 mr-2" />
@@ -90,12 +90,6 @@ const ProjectCard = ({
           </Button>
         </div>
       </div>
-      
-      <QuickOrderModal 
-        isOpen={isQuickOrderOpen}
-        onClose={() => setIsQuickOrderOpen(false)}
-        projectTitle={title}
-      />
     </div>
   );
 };

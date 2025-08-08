@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import SectionTitle from './UI/SectionTitle';
 import GalleryControls from './UI/GalleryControls';
@@ -7,6 +7,7 @@ import ProjectsSlider from './UI/ProjectsSlider';
 import { useProjectsStore } from '@/hooks/useProjectsStore';
 import { useGallerySlider } from '@/hooks/useGallerySlider';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
+import QuickOrderModal from './UI/QuickOrderModal';
 
 const ProjectsGallery = () => {
   const { projects } = useProjectsStore();
@@ -25,6 +26,8 @@ const ProjectsGallery = () => {
   });
   
   const sectionRef = useScrollReveal();
+  const [isQuickOrderOpen, setIsQuickOrderOpen] = useState(false);
+  const [selectedProjectTitle, setSelectedProjectTitle] = useState<string | undefined>(undefined);
   
   return (
     <section id="gallery" className="py-20 bg-construction-offWhite" ref={sectionRef}>
@@ -41,6 +44,10 @@ const ProjectsGallery = () => {
             startIndex={startIndex}
             isTransitioning={isTransitioning}
             visibleProjects={visibleProjects}
+            onQuickEstimate={(title) => {
+              setSelectedProjectTitle(title);
+              setIsQuickOrderOpen(true);
+            }}
           />
           
           <GalleryControls 
@@ -57,6 +64,12 @@ const ProjectsGallery = () => {
           </Link>
         </div>
       </div>
+
+      <QuickOrderModal 
+        isOpen={isQuickOrderOpen}
+        onClose={() => setIsQuickOrderOpen(false)}
+        projectTitle={selectedProjectTitle}
+      />
     </section>
   );
 };

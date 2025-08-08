@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/UI/button';
 import { cn } from '@/lib/utils';
 import { 
   Dialog, 
@@ -11,9 +11,9 @@ import {
   DialogTrigger,
   DialogDescription,
   DialogFooter
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from "@/components/UI/dialog";
+import { Input } from "@/components/UI/input";
+import { Label } from "@/components/UI/label";
 import { useToast } from "@/hooks/use-toast";
 import { sendCallbackRequest } from '@/services/telegramService';
 

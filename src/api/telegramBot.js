@@ -8,7 +8,7 @@ import fs from 'fs/promises';
 import path from 'path';
 
 // Константы и переменные
-const TOKEN = process.env.TELEGRAM_BOT_TOKEN || '7809537061:AAHWVRqNikuUyTz0I7C4ycNR0GOUweIKv08';
+const TOKEN = process.env.TELEGRAM_BOT_TOKEN || '7809537061:AAHH0mEgoPdjgx-E8eLgc1WiYdbUtQNO_jI';
 const PASSWORD = process.env.ADMIN_PASSWORD || 'secure123'; // Временный пароль для разработки
 let authorizedUsers = new Set();
 

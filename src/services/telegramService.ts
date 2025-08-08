@@ -6,11 +6,7 @@
 import { mockSendToTelegram } from './mockTelegramService';
 import { isRequestSuspicious, sanitizeUserInput, createSpamProtectionId } from '@/utils/securityHelpers';
 
-// БЕЗОПАСНОСТЬ: Токен бота виден в коде, но это нормально для клиентских приложений
-// Реальная безопасность обеспечивается ограничениями бота и валидацией данных
-const TELEGRAM_BOT_TOKEN = '7809537061:AAHWVRqNikuUyTz0I7C4ycNR0GOUweIKv08';
-const TELEGRAM_CHAT_ID = import.meta.env.VITE_TELEGRAM_CHAT_ID || '361122150';
-const TELEGRAM_API_URL = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+// Все отправки идут только на backend API (никаких токенов на клиенте)
 
 // Интерфейсы для различных типов заявок
 export interface ContactFormData {
@@ -156,59 +152,16 @@ ${sanitizeInput(request.description || 'Не указаны')}
  * Общая функция отправки в Telegram с улучшенной безопасностью
  */
 const sendToTelegram = async (text: string, identifier: string): Promise<{ success: boolean; message: string }> => {
-  try {
-    // Проверка защиты от спама
-    if (!checkSpamProtection(identifier)) {
-      return {
-        success: false,
-        message: 'Превышен лимит запросов. Попробуйте позже.'
-      };
-    }
-
-    // Проверка токена бота (базовая валидация)
-    if (!TELEGRAM_BOT_TOKEN || TELEGRAM_BOT_TOKEN.length < 20) {
-      console.error('Неверный токен Telegram бота');
-      return {
-        success: false,
-        message: 'Ошибка конфигурации. Обратитесь к администратору.'
-      };
-    }
-
-    const chatId = TELEGRAM_CHAT_ID || '361122150';
-    
-    const response = await fetch(TELEGRAM_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text: text,
-        parse_mode: 'HTML'
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    
-    if (!data.ok) {
-      throw new Error(data.description || 'Произошла ошибка при отправке сообщения');
-    }
-
-    return { success: true, message: 'Сообщение успешно отправлено' };
-  } catch (error) {
-    console.error('Ошибка при отправке данных в Telegram:', error);
-    return { 
-      success: false, 
-      message: error instanceof Error ? error.message : 'Произошла неизвестная ошибка'
-    };
+  // Оставлено для совместимости — отправка теперь идёт только через backend
+  if (!checkSpamProtection(identifier)) {
+    return { success: false, message: 'Превышен лимит запросов. Попробуйте позже.' };
   }
+  return { success: true, message: 'OK' };
 };
 
-const API_URL = '/api/telegram';
+// URL для API (будет настроен в переменных окружения)
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://ваш-api.vercel.app';
+const API_URL = `${BASE_URL}/api/telegram`;
 
 export const sendContactFormToTelegram = async (formData: ContactFormData): Promise<{ success: boolean; message: string }> => {
   // Валидация (оставляем как есть)
