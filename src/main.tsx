@@ -1,5 +1,9 @@
 
+<<<<<<< HEAD
 import React from 'react';
+=======
+import React from 'react'
+>>>>>>> f7c9ad954b3fba7163a1cce4cd05e13e963c0f01
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'

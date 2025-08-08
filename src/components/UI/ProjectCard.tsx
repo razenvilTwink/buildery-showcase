@@ -3,6 +3,10 @@ import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { MapPin, Home, Calculator } from 'lucide-react';
 import { Button } from '@/components/UI/button';
+<<<<<<< HEAD
+=======
+import QuickOrderModal from './QuickOrderModal';
+>>>>>>> f7c9ad954b3fba7163a1cce4cd05e13e963c0f01
 
 interface ProjectCardProps {
   image: string;
